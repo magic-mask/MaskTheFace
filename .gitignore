@@ -25,3 +25,5 @@ datasets
 *.dat
 *.docx
 
+# uv 환경 세팅
+dlib-19.24.0-cp310-cp310-win_amd64.whl

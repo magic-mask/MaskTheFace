@@ -1,6 +1,6 @@
 
 ## What is MaskTheFace?
-MaskTheFace is computer vision-based script to mask faces in images. It uses a dlib based face landmarks detector to identify the face tilt and six key features of the face necessary for applying mask. Based on the face tilt, corresponding mask template is selected from the library of mask. The template mask is then transformed based on the six key features to fit perfectly on the face. The complete block diagram can be seen below. MaskTheFace provides a number of masks to select from. It is difficult to collect mask dataset under various conditions. MaskTheFace can be used to convert any existing face dataset to masked-face dataset. MaskTheFace identifies all the faces within an image, and applies the user selected masks to them taking into account various limitations such as face angle, mask fit, lighting conditions etc. A single image, or entire directory of images can be used as input to code.
+MaskTheFace is computer vision-based script to mask faces in images. It uses a dlib based face landmarks detector
 ![block_diagram](images/block_diag.png)
 
 ## How to install MaskTheFace
@@ -18,7 +18,44 @@ cd MaskTheFace
 pip install –r requirements.txt
 ```
 
-This will install the required packages in the activated Python environment.
+### 윈도우 빌드 환경 준비 (필수)
+uv가 dlib을 컴파일할 수 있도록 윈도우에 아래 두 가지를 설치해야 합니다.
+
+CMake 설치: CMake 공식 홈페이지에서 Windows x64 Installer를 받아 설치하거나, Terminal에서 winget install kitware.cmake를 입력해 설치합니다. (설정 시 환경변수 PATH 등록 체크 필수)
+
+Visual Studio Build Tools 설치: Visual Studio 다운로드 페이지에서 'C++를 사용한 데스크톱 개발' 워크로드를 체크하고 설치합니다.
+
+## 🛠️ Windows Installation Guide (dlib Troubleshoot)
+
+윈도우 환경에서는 `dlib` 컴파일 오류가 자주 발생합니다. 아래 가이드는 Python 3.8 환경에서 미리 빌드된 `.whl` 파일을 이용해 안전하게 환경을 구축하는 방법입니다.
+
+### 설치 단계 (Setup Steps)
+
+#### 단계 1: dlib 윈도우용 Wheel 파일 다운로드
+Python 3.8(cp38) 및 Windows 64비트 환경에 맞는 `dlib` 바이너리 파일을 다운로드해야 합니다.
+* 파일명: `dlib-19.19.0-cp38-cp38-win_amd64.whl`
+* 다운로드 후, 이 프로젝트의 **루트 디렉토리(최상위 폴더)**에 위치시켜 주세요.
+
+#### 단계 2: 프로젝트 초기화 및 가상환경 빌드
+터미널(PowerShell 또는 CMD)을 열고 프로젝트 폴더에서 아래 명령어를 순서대로 입력합니다.
+
+```bash
+# 1. uv 프로젝트 초기화 (이미 되어 있다면 패스)
+uv init
+
+# 2. 프로젝트 파이썬 버전을 3.8로 고정
+# (참고: pyproject.toml 파일의 requires-python 선언도 "==3.8.*" 등으로 맞춰야 합니다.)
+uv python pin 3.8
+
+# 3. 파이썬 3.8 가상환경 생성
+uv venv --python 3.8
+
+# 4. 다운로드한 dlib Wheel 파일 강제 선행 설치
+uv pip install dlib-19.19.0-cp38-cp38-win_amd64.whl
+
+# 5.머지않아 나머지 패키지 일괄 설치 (face-recognition, opencv 등)
+uv pip install -r requirements.txt
+```
 
 ## How to run MaskTheFace
 
